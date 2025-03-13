@@ -51,7 +51,7 @@ plt.close()
 
 # Heatmap
 plt.figure(figsize=(10, 6))
-sns.heatmap(data['Temperature change'].values.reshape(-1, 1), annot=False, cmap='coolwarm', cbar=True, yticklabels=data.index.astype(str))
+sns.heatmap(data['Temperature change'].values.reshape(-1, 1), annot=False, cmap='coolwarm', cbar=True)
 plt.title('Heatmap of Temperature Change')
 plt.xlabel('Temperature Change')
 plt.ylabel('Year')
@@ -218,3 +218,31 @@ plt.legend()
 plt.grid(True)
 plt.savefig('pics/prediction_forecast.png', dpi=350)
 plt.close()
+
+# # Save test results to output.csv
+# test_results = {
+#     'Original Ljung-Box Test Result': ljung_box_result,
+#     'First Order Ljung-Box Test Result': ljung_box_result_diff,
+#     'Second Order Ljung-Box Test Result': ljung_box_result_diff2,
+#     'Remainder Ljung-Box Test Result': ljung_box_result_remainder,
+#     'Original ADF p-value': [adf_result[1]],
+#     'First Order ADF p-value': [adf_result_diff[1]],
+#     'Second Order ADF p-value': [adf_result_diff2[1]],
+#     'Mean Squared Error': [mse],
+#     'AIC': [model.aic]
+# }
+
+# Save test results to output.csv
+test_results = {
+    'Original Ljung-Box p-value': ljung_box_result['lb_pvalue'].values,
+    'First Order Ljung-Box p-value': ljung_box_result_diff['lb_pvalue'].values,
+    'Second Order Ljung-Box p-value': ljung_box_result_diff2['lb_pvalue'].values,
+    'Remainder Ljung-Box p-value': ljung_box_result_remainder['lb_pvalue'].values,
+    'Original ADF p-value': [adf_result[1]],
+    'First Order ADF p-value': [adf_result_diff[1]],
+    'Second Order ADF p-value': [adf_result_diff2[1]],
+    'Mean Squared Error': [mse],
+    'AIC': [model.aic]
+}
+test_results_df = pd.DataFrame(test_results)
+test_results_df.to_csv('output.csv', index=False)
